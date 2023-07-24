@@ -37,13 +37,13 @@ class ViewController: UIViewController {
         let session = URLSession.shared
         
         let task = session.dataTask(with: url!) { data, response, error in
-            guard error != nil else{
+            if error != nil {
                 print("Error")
                 print(error.debugDescription)
                 return
             }
             
-            guard data != nil else{
+            guard data != nil else {
                 print("no data")
                 return
             }
@@ -54,9 +54,14 @@ class ViewController: UIViewController {
                 DispatchQueue.main.async {
                     if let main = jsonResponse!["main"] as? [String:Any]{
                         if let Temperature = main["temp"] as? Double {
-                            self.Temperature.text = String(Temperature) + "°"
+                            self.Temperature.text = String(Int(Temperature-272.15)) + "°"
                         }
                     }
+                    
+                    if let name = jsonResponse!["name"] as? String{
+                        self.CityName.text = name
+                    }
+            
                 }
             }catch {
                 
